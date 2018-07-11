@@ -14,7 +14,7 @@ class Mastermind
 
 	def initialize
 		@board = Board.new(12,4)
-		@player = Player.new
+		@player = PlayerCodebraker.new
 		@secret_code = computer_code_generator(4, @@colors)
 	end
 
@@ -37,7 +37,20 @@ class Mastermind
 		end
 	end
 
+	def game_set_up
+		#player picks code_creator, code_guesser
+		puts "If you wanna play as Code Breaker press 1"
+		puts "If you wanna play as Code Maker press 2"
+		player_input = gets.chomp.to_i
+		case player_input
+		when 1 then PlayerCodebraker.new
+		when 2 then PlayerCodemaker.new
+		else game_set_up #if input is not 1 or 2 recursion to prompt again
+		end
+	end
+
 	def computer_code_generator(code_length, options)
+		puts "...initialize unbreakable code..."#find better place for text
 		secret_code = Array.new
 		code_length.times do 
 			i = rand(options.size) + 1
@@ -49,22 +62,27 @@ class Mastermind
 
 	def winner_found?(code)
 		code.map! { |item| item.new_token[:color] == :red }
-		code.all?(true)
+		code.all?(true) && code.size == 4
 	end
 
 	def code_compare(player_code, computer_code)# flag "\u2691"
-		compare_result = []
+		colors_found = Array.new
+		red_flag = Array.new
+		white_flag = Array.new
 		player_code.each_with_index do |item, inx|
 			if item.new_token[:color] == computer_code[inx]
-				compare_result.unshift(Token.new("\u2691", :red))
-				if computer_code[0..inx].include?(item.new_token[:color]) || 
-					computer_code[(inx + 1)..-1].include?(item.new_token[:color])
-				compare_result.push(Token.new("\u2691", :white)) if 
-					!(compare_result.include?(item.new_token[:white]))
-				end
+				colors_found.push(item.new_token[:color])
+				red_flag.push(Token.new("\u2691", :red))
 			end
 		end
-		compare_result[0..3]
+		player_code.each do |item|
+			if (computer_code.include?(item.new_token[:color]) &&
+					colors_found.none?(item.new_token[:color]))
+				white_flag.push(Token.new("\u2691", :white)) 
+				colors_found.push(item.new_token[:color])
+			end
+		end
+		red_flag + white_flag
 	end
 end
 # board class - makes board with instance methods
@@ -104,9 +122,9 @@ class Token
 	end
 end
 # player class - makes player and instance methods
-class Player 
+class PlayerCodebraker 
 	def initialize
-		puts "Welcome player!!!"
+		puts "Welcome Code Breaker!!!"
 	end
 
 	def display_player_options(options, token = "\u25cf")
@@ -124,7 +142,7 @@ class Player
 		begin
 			puts "Enter #{guesses} numbers (1-#{options.size}),no spaces between!"
 			player_input = gets.chomp.split(//)[0...guesses]
-			raise StandardError if !(player_input.all?('0'..'9'))
+			raise StandardError if !(player_input.all?('0'..options.size.to_s))
 		rescue StandardError
 			retry
 		end 
@@ -135,6 +153,31 @@ class Player
 	end
 end
 
+class PlayerCodemaker < PlayerCodebraker
+	attr_reader :secret_code
 
-x = Mastermind.new
-x.start_game
+	def initialize
+		puts "Welcome Code Maker!!!"
+		@secret_code = create_secret_code(@@colors, 4)
+	end
+
+	def create_secret_code(options, code_length, token = "\u25cf")
+		display_player_options(options, token)
+		player_choice = Array.new
+		begin
+			puts "Enter #{code_length} numbers (1-#{options.size}),no spaces between!"
+			player_input = gets.chomp.split(//)[0...code_length]
+			raise StandardError if !(player_input.all?('0'..options.size.to_s))
+		rescue StandardError
+			retry
+		end 
+		player_input.each do |x|
+			player_choice.push(options[x.to_i])
+		end
+		player_choice
+	end
+end
+
+#x = Mastermind.new
+#x.game_set_up
+x = PlayerCodemaker.new
