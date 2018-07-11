@@ -10,31 +10,43 @@ class Mastermind
 		6 => :white
 	}
 
-	attr_reader :board, :player, :secret_code
+	attr_reader :board, :player, :secret_code, :set_up
 
 	def initialize
 		@board = Board.new(12,4)
-		@player = PlayerCodebraker.new
-		@secret_code = computer_code_generator(4, @@colors)
+		@set_up = game_set_up
+		if @set_up == 1
+			@player = PlayerCodebraker.new
+			@secret_code = computer_code_generator(@@colors, 4)
+			start_game_codebreaker
+		else
+			@player = PlayerCodemaker.new(@@colors, 4)#secret code-@player.secret_code
+			@ai_player = AiCodeBreaker.new
+			start_game_codemaker
+		end
 	end
 
-	def start_game
+	def start_game_codebreaker
 		@board.display_board
 
 		12.times do |i|
 			puts
 			sleep 1
-			x = @player.player_guess(@@colors,4)
-			@board.new_board[i] = x
-			y = code_compare(x, @secret_code)
-			@board.new_board[i] += y
+			player_input = @player.player_guess(@@colors,4)
+			@board.new_board[i] = player_input
+			compare_result = code_compare(player_input, @secret_code)
+			@board.new_board[i] += compare_result
 			sleep 1
 			@board.display_board
-			if winner_found?(y)
+			if winner_found?(compare_result)
 				puts "\nYOU FOUND SECERT CODE, GZ!!!"
 				exit
 			end
 		end
+	end
+
+	def start_game_codemaker
+		exit
 	end
 
 	def game_set_up
@@ -43,13 +55,13 @@ class Mastermind
 		puts "If you wanna play as Code Maker press 2"
 		player_input = gets.chomp.to_i
 		case player_input
-		when 1 then PlayerCodebraker.new
-		when 2 then PlayerCodemaker.new
+		when 1 then 1
+		when 2 then 2
 		else game_set_up #if input is not 1 or 2 recursion to prompt again
 		end
 	end
 
-	def computer_code_generator(code_length, options)
+	def computer_code_generator(options, code_length)
 		puts "...initialize unbreakable code..."#find better place for text
 		secret_code = Array.new
 		code_length.times do 
@@ -156,9 +168,9 @@ end
 class PlayerCodemaker < PlayerCodebraker
 	attr_reader :secret_code
 
-	def initialize
+	def initialize(options, code_length)
 		puts "Welcome Code Maker!!!"
-		@secret_code = create_secret_code(@@colors, 4)
+		@secret_code = create_secret_code(options, code_length)
 	end
 
 	def create_secret_code(options, code_length, token = "\u25cf")
@@ -178,6 +190,9 @@ class PlayerCodemaker < PlayerCodebraker
 	end
 end
 
-#x = Mastermind.new
-#x.game_set_up
-x = PlayerCodemaker.new
+class AiCodeBreaker
+end
+
+Mastermind.new
+
+
