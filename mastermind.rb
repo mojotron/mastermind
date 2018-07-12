@@ -9,56 +9,37 @@ class Mastermind
 
 	def initialize
 		@set_up = game_set_up
-		if @set_up == 1
-			@board = Board.new(12,4)
+		@board = Board.new(12,4)
+		if @set_up == 1	
 			@player = PlayerCodebraker.new
 			@secret_code = computer_code_generator(@@colors, 4)
-			start_game_codebreaker
 		else
-			@player = PlayerCodemaker.new(@@colors, 4)#secret code-@player.secret_code
-			@ai_player = AiCodeBreaker.new
-			@board = Board.new(12,4)
-			start_game_codemaker	
+			@player = AiCodeBreaker.new
+			@secret_code = PlayerCodemaker.new(@@colors, 4)#secret code-@player.secret_code	
 		end
+		start_game
 	end
 
-	def start_game_codebreaker
+	def start_game
 		@board.display_board
 		@board.new_board.size.times do |i|
 			puts
 			sleep 1
 			player_input = @player.player_guess(@@colors,4)
 			@board.new_board[i] = player_input
-			compare_result = code_compare(player_input, @secret_code)
+			@set_up == 1 ? compare_result = code_compare(player_input, @secret_code) :
+					compare_result = code_compare(player_input, @secret_code.secret_code)
 			@board.new_board[i] += compare_result
 			sleep 1
 			@board.display_board
 			if winner_found?(compare_result)
-				puts "\nYOU FOUND SECERT CODE, GZ!!!"
+				puts (@set_up == 1 ? "\nYOU FOUND SECERT CODE, GZ!!!" : 
+								"\nCOMPUTER FOUND SECERT CODE, SORRY!!!")
 				exit
 			end
 		end
-		puts "\nYOu DIDN'T FOUND SECRET CODE, GAME OVER!!!"
-		exit
-	end
-
-	def start_game_codemaker
-		@board.display_board
-		@board.new_board.size.times do |i|
-			puts
-			sleep 1
-			computer_input = @ai_player.computer_code_generator(@@colors, 4)
-			@board.new_board[i] = computer_input
-			compare_result = code_compare(computer_input, @player.secret_code)
-			@board.new_board[i] += compare_result
-			sleep 1
-			@board.display_board
-			if winner_found?(compare_result)
-				puts "\nCOMPUTER FOUND SECERT CODE, SORRY!!!"
-				exit
-			end
-		end
-		puts "YOURE CODE IS UNBREAKABLE!!!"
+		puts (@set_up == 1 ? "\nGAME OVER!!! SORRY" : 
+								"\nYOUR CODE IS UNBREAKABLE!!!")
 		exit
 	end
 
@@ -81,7 +62,7 @@ class Mastermind
 			i = rand(options.size) + 1
 			secret_code.push(options[i])
 		end
-		p secret_code
+		#p secret_code
 		secret_code
 	end
 
@@ -90,16 +71,14 @@ class Mastermind
 		code.all?(true) && code.size == 4
 	end
 
-	def code_compare(player_code, computer_code) #refactor after additional tests
+	def code_compare(player_code, computer_code)
 		#red flag only if position and color match
 		#white flag if color match but on wrong position, and that spot is not red flag
 		colors_position = [false, false, false, false]
-		#colors_found = Array.new##remove if works
 		red_flag = Array.new
 		white_flag = Array.new
 		player_code.each_with_index do |item, inx|
 			if item.new_token[:color] == computer_code[inx]
-				##colors_found.push(item.new_token[:color])
 				colors_position[inx] = item.new_token[:color]
 				red_flag.push(Token.new("\u2691", :red))
 			end
@@ -108,10 +87,9 @@ class Mastermind
 			next if computer_code.count(item.new_token[:color]) == 
 					colors_position.count(item.new_token[:color])
 			next if colors_position[inx] == item.new_token[:color]
-			if (computer_code.include?(item.new_token[:color]))# && (colors_found.none?(item.new_token[:color]))
+			if computer_code.include?(item.new_token[:color])
 				white_flag.push(Token.new("\u2691", :white))
-				colors_position[inx] = item.new_token[:color] ##novi line
-				##colors_found.push(item.new_token[:color])
+				colors_position[inx] = item.new_token[:color]
 			end
 		end
 		red_flag + white_flag
@@ -221,7 +199,7 @@ end
 
 class AiCodeBreaker 
 
-	def computer_code_generator(options, guesses, token = "\u25cf")
+	def player_guess(options, guesses, token = "\u25cf")
 		puts "...loading codebreaker algoritam..."#find better place for text
 		computer_guess = Array.new
 		guesses.times do 
