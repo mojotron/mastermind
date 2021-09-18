@@ -1,0 +1,25 @@
+{
+  "name": "mastermind",
+  "version": "1.0.0",
+  "description": "Learning Webpack and ES6 Modules by building Mastermind boardgame",
+  "privat": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mojotron/mastermind.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mojotron/mastermind/issues"
+  },
+  "homepage": "https://github.com/mojotron/mastermind#readme",
+  "devDependencies": {
+    "webpack": "^5.53.0",
+    "webpack-cli": "^4.8.0"
+  }
+}
