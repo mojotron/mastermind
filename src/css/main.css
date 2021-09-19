@@ -1,0 +1,39 @@
+@import url("https://fonts.googleapis.com/css2?family=Expletus+Sans&family=Gruppo&display=swap");
+:root {
+  --peg-blue: #1ecbe1;
+  --peg-green: #15ea48;
+  --peg-yellow: #e1ec13;
+  --peg-red: #f1200e;
+  --peg-orange: #fa6805;
+  --peg-purple: #ee11a4;
+  --peg-brown: #6d2e09;
+  --peg-black: #373338;
+  --flag-white: #ddd7fc;
+  --flag-red: #f2080b;
+}
+
+html {
+  font-family: "Gruppo", monospace, sans-serif;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--peg-blue);
+}
+
+.main-wrapper {
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  grid-template-rows: 1fr 3fr 1fr;
+}
+.header {
+  /*Grid-area*/
+  /*row-start/column-start/row-end/column-end:*/
+  grid-area: 1 / 1 / 2 / 3;
+}
+
+.high-score-display {
+  grid-area: 2 / 2 / 3 / 3;
+}
