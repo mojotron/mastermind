@@ -19,21 +19,43 @@ html {
 }
 
 body {
-  background-color: var(--peg-blue);
+  height: 100vh;
+  width: 100%;
+  background: linear-gradient(-65deg, var(--peg-blue), var(--peg-yellow));
 }
-
+/*Main container - wrapper*/
 .main-wrapper {
   padding: 2rem;
+  border: 3px solid black;
+
   display: grid;
   grid-template-columns: 3fr 2fr;
   grid-template-rows: 1fr 3fr 1fr;
 }
-.header {
+/*Header*/
+.header-section {
   /*Grid-area*/
   /*row-start/column-start/row-end/column-end:*/
   grid-area: 1 / 1 / 2 / 3;
 }
+.header-title {
+  font-family: "Expletus Sans", "Gruppo", monospace;
+  font-size: 3rem;
+}
 
 .high-score-display {
   grid-area: 2 / 2 / 3 / 3;
+}
+/*COLOR PICKER*/
+.color-picker-display {
+  grid-area: 3 / 1 / 4 / 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.color-choice {
+  height: 2rem;
+  width: 2rem;
+  border: 3px solid black;
+  border-radius: 100%;
 }

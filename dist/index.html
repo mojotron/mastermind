@@ -9,20 +9,32 @@
   </head>
   <body>
     <div class="main-wrapper">
-      <header class="header">
-        <h1>Mastermind</h1>
+      <header class="header-section">
+        <h1 class="header-title">Mastermind</h1>
       </header>
       <div class="game-board-display"></div>
-      <div class="color-picker-display"></div>
+      <div class="color-picker-display">
+        <div class="color-choice" data-color-pick="blue"></div>
+      </div>
       <div class="high-score-display">
-        <h2>Highscores</h2>
+        <h2>Highscores Normal</h2>
         <ul>
-          <li>Name Moves Time</li>
-          <li>Name Moves Time</li>
-          <li>Name Moves Time</li>
-          <li>Name Moves Time</li>
-          <li>Name Moves Time</li>
+          <li>Mojo 9 Moves 04:37</li>
+          <li>Mojo 9 Moves 04:37</li>
+          <li>Mojo 9 Moves 04:37</li>
+          <li>Mojo 9 Moves 04:37</li>
+          <li>Mojo 9 Moves 04:37</li>
         </ul>
+      </div>
+      <div class="new-game">
+        <form class="game-options">
+          <select class="difficulty">
+            <option value="easy">easy</option>
+            <option value="normal" selected>normal</option>
+            <option value="hard">hard</option>
+          </select>
+          <button class="new-game">New Game</button>
+        </form>
       </div>
     </div>
   </body>

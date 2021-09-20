@@ -1,20 +1,25 @@
-"use strict";
+'use strict';
 
-import "../css/reset.css";
-import "../css/main.css";
+import '../css/reset.css';
+import '../css/main.css';
 
-//Easy game 3 pins from 5 colors
-//Normal game set 4 pins from 6 colors
-//Hard mode 5 pins from 8 colors
+import codeMaker from './codeMaker.js';
 
 //number of guesses 10 or 12 depending on manufacturer
+const state = {
+  code: [],
+};
 
-//fonts
-//<link rel="preconnect" href="https://fonts.googleapis.com">
-//<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-//<link href="https://fonts.googleapis.com/css2?family=Expletus+Sans&family=Gruppo&display=swap" rel="stylesheet">
+const newGameBtn = document.querySelector('.new-game');
+newGameBtn.addEventListener('submit', function (e) {
+  e.preventDefault();
+  const difficulty = document.querySelector('select');
+  state.code = codeMaker.createCode(difficulty.value);
+  console.log(state.code);
+});
 
-//make number of random colors
-//wait for user to input colors
-//compare
-//return result
+class FormView {
+  _parentElement = document.querySelector('.game-option');
+
+  addHandlerClick(handler) {}
+}
