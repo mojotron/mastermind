@@ -12,10 +12,23 @@
       <header class="header-section">
         <h1 class="header-title">Mastermind</h1>
       </header>
-      <div class="game-board-display"></div>
-      <div class="color-picker-display">
-        <div class="color-choice" data-color-pick="blue"></div>
+      <div class="game-board-display">
+        <div class="game-turn" data-turn="1">
+          <div class="game-turn-pegs">
+            <div class="color-choice"></div>
+            <div class="color-choice"></div>
+            <div class="color-choice"></div>
+            <div class="color-choice"></div>
+          </div>
+          <div class="game-turn-flags">
+            <div class="color-choice"></div>
+            <div class="color-choice"></div>
+            <div class="color-choice"></div>
+            <div class="color-choice"></div>
+          </div>
+        </div>
       </div>
+      <div class="color-picker-display"></div>
       <div class="high-score-display">
         <h2>Highscores Normal</h2>
         <ul>
@@ -33,7 +46,7 @@
             <option value="normal" selected>normal</option>
             <option value="hard">hard</option>
           </select>
-          <button class="new-game">New Game</button>
+          <button class="btn-new-game">New Game</button>
         </form>
       </div>
     </div>

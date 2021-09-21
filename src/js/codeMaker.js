@@ -1,6 +1,6 @@
 class CodeMaker {
   //prettier-ignore
-  #colors = [
+  #colors = [//TODO make config file
     "blue", "green", "yellow", "red",
     "orange", "purple", "brown", "black",
   ];
@@ -17,11 +17,11 @@ class CodeMaker {
       this.#getColor(colorChoice)
     );
   }
-  createCode(difficulty = "normal") {
+  createCode(difficulty = 'normal') {
     //Easy game 3 pins from 5 colors
-    if (difficulty === "easy") return this.#makeCode(3, 5);
+    if (difficulty === 'easy') return this.#makeCode(3, 4);
     //Hard mode 5 pins from 8 colors
-    if (difficulty === "hard") return this.#makeCode(5, 8);
+    if (difficulty === 'hard') return this.#makeCode(5, 8);
     //Normal game set 4 pins from 6 colors
     return this.#makeCode(4, 6);
   }

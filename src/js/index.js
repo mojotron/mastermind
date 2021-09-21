@@ -5,21 +5,55 @@ import '../css/main.css';
 
 import codeMaker from './codeMaker.js';
 
-//number of guesses 10 or 12 depending on manufacturer
+const colors = [
+  //TODO make config file
+  'blue',
+  'green',
+  'yellow',
+  'red',
+  'orange',
+  'purple',
+  'brown',
+  'black',
+];
 const state = {
+  moves: 10,
+  difficulty: '',
+  colors: { easy: 4, normal: 6, hard: 8 },
   code: [],
 };
-
-const newGameBtn = document.querySelector('.new-game');
-newGameBtn.addEventListener('submit', function (e) {
+//Handling New Game button with difficulty
+const newGame = document.querySelector('.btn-new-game');
+newGame.addEventListener('click', function (e) {
   e.preventDefault();
   const difficulty = document.querySelector('select');
-  state.code = codeMaker.createCode(difficulty.value);
-  console.log(state.code);
+  console.log(difficulty.value);
+  state.difficulty = difficulty.value;
+  console.log(state);
+  console.log(state.colors[state.difficulty]);
+  state.code = codeMaker.createCode(state.difficulty);
+  renderColorPickers(state.colors[state.difficulty]);
 });
 
-class FormView {
-  _parentElement = document.querySelector('.game-option');
+//Creating color pickers depending on game difficulty
 
-  addHandlerClick(handler) {}
-}
+const colorPickerContainer = document.querySelector('.color-picker-display');
+
+const renderColorPickers = function (amount) {
+  colorPickerContainer.innerHTML = '';
+  for (let i = 0; i < amount; i++) {
+    const html = `
+      <button 
+        class="color-choice" 
+        data-color-pick="${colors[i]}" 
+        style="background-color:var(--peg-${colors[i]});">
+      </button>
+    `;
+    colorPickerContainer.insertAdjacentHTML('beforeend', html);
+  }
+};
+
+// const init = function () {
+//   renderColorPickers(8);
+// };
+// init();
