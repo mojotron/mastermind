@@ -21,15 +21,15 @@ html {
 body {
   height: 100vh;
   width: 100%;
-  background: linear-gradient(-65deg, var(--peg-blue), var(--peg-yellow));
+  background: linear-gradient(-65deg, var(--peg-blue), var(--peg-green));
 }
 /*Main container - wrapper*/
 .main-wrapper {
+  height: 75%;
   padding: 2rem;
-  border: 3px solid black;
   display: grid;
-  grid-template-columns: 5fr 2fr;
-  grid-template-rows: 1fr 3fr 1fr;
+  grid-template-columns: 2fr 2fr;
+  grid-template-rows: 1fr 5fr 1fr;
 }
 /*Header*/
 .header-section {
@@ -46,25 +46,45 @@ body {
 /* New game options*/
 .new-game {
   grid-area: 3 / 2 / 4 / 3;
+  display: flex;
+  justify-content: center;
 }
 .difficulty,
 .btn-new-game {
   border: none;
+  font-size: 1rem;
   font-family: 'Expletus Sans', 'Gruppo', monospace;
   padding: 0.3rem 0.5rem;
-  color: var(--peg-black);
+  color: var(--flag-white);
   border-radius: 0.3rem;
+  background-color: var(--peg-black);
+  cursor: pointer;
 }
+.difficulty:hover,
+.btn-new-game:hover {
+  color: var(--peg-black);
+  background-color: var(--flag-white);
+}
+/*Highscores*/
 .high-score-display {
   grid-area: 2 / 2 / 3 / 3;
+  margin: 0 auto;
 }
+
+.high-score-display h2 {
+  font-size: 2rem;
+  border-bottom: 0.2rem solid var(--peg-black);
+}
+.high-score-item {
+  font-size: 1.5rem;
+}
+
 /*COLOR PICKER*/
 .color-picker-display {
   grid-area: 3 / 1 / 4 / 2;
   margin: 0 auto;
   display: flex;
-  width: 12rem;
-  flex-wrap: wrap;
+
   justify-content: center;
   align-items: center;
 }
@@ -79,4 +99,26 @@ body {
 /*Game board-display*/
 .game-board-display {
   grid-area: 2 / 1 / 3 / 2;
+  margin: 0 auto;
+}
+
+.game-turn {
+  width: 25rem;
+  margin: 0.3rem 0;
+  border-radius: 0.3rem;
+  display: flex;
+  justify-content: space-around;
+  border: 0.1rem solid var(--peg-black);
+}
+.game-turn-pegs,
+.game-turn-flags {
+  display: flex;
+}
+
+.color-pin {
+  transform: scale(0.75);
+  margin: 0;
+}
+.color-flag {
+  transform: scale(0.35);
 }

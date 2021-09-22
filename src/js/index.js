@@ -17,7 +17,6 @@ const colors = [
   'black',
 ];
 const state = {
-  moves: 10,
   difficulty: '',
   colors: { easy: 4, normal: 6, hard: 8 },
   code: [],
@@ -26,19 +25,15 @@ const state = {
 const newGame = document.querySelector('.btn-new-game');
 newGame.addEventListener('click', function (e) {
   e.preventDefault();
-  const difficulty = document.querySelector('select');
-  console.log(difficulty.value);
-  state.difficulty = difficulty.value;
-  console.log(state);
-  console.log(state.colors[state.difficulty]);
-  state.code = codeMaker.createCode(state.difficulty);
+  const difficulty = document.querySelector('select').value;
+  state.difficulty = difficulty;
+  state.code = codeMaker.createCode(difficulty);
   renderColorPickers(state.colors[state.difficulty]);
+  console.log(state);
 });
 
 //Creating color pickers depending on game difficulty
-
 const colorPickerContainer = document.querySelector('.color-picker-display');
-
 const renderColorPickers = function (amount) {
   colorPickerContainer.innerHTML = '';
   for (let i = 0; i < amount; i++) {
@@ -53,6 +48,32 @@ const renderColorPickers = function (amount) {
   }
 };
 
+//Creating and rendering board
+const gameBoard = document.querySelector('.game-board-display');
+const crateBoard = function () {
+  for (let i = 0; i < 10; i++) {
+    const html = `
+      <div class="game-turn" data-turn="${i}">
+        <div class="game-turn-pegs">
+          ${createBoardPeg(4, 'pin')}
+        </div>
+        <div class="game-turn-flags">
+        ${createBoardPeg(4, 'flag')}
+        </div>
+      </div>
+    `;
+    gameBoard.insertAdjacentHTML('afterbegin', html);
+  }
+};
+
+const createBoardPeg = function (length, datasetName) {
+  let html = '';
+  for (let i = 0; i < length; i++) {
+    html += `<div class="color-choice color-${datasetName}" data-${datasetName}="${i}"></div>`;
+  }
+  return html;
+};
+crateBoard();
 // const init = function () {
 //   renderColorPickers(8);
 // };
