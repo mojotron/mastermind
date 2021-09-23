@@ -114,6 +114,13 @@ body {
 .game-turn-flags {
   display: flex;
 }
+.game-turn-active {
+  background-color: #50f1a1;
+}
+.game-turn-win {
+}
+.game-turn-miss {
+}
 
 .color-pin {
   transform: scale(0.75);
