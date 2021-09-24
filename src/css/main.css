@@ -96,6 +96,17 @@ body {
   cursor: pointer;
   margin: 0.3rem;
 }
+/*contol btns*/
+.control-btn {
+  color: var(--flag-white);
+  background-color: var(--peg-black);
+  font-size: 1.6rem;
+  font-weight: 800;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
 /*Game board-display*/
 .game-board-display {
   grid-area: 2 / 1 / 3 / 2;
@@ -115,7 +126,7 @@ body {
   display: flex;
 }
 .game-turn-active {
-  background-color: #50f1a1;
+  background: linear-gradient(90deg, #9ef1c8, rgb(153, 133, 133));
 }
 .game-turn-win {
 }

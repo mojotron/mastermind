@@ -16,16 +16,27 @@ const state = {
 const colorPickerContainer = document.querySelector('.color-picker-display');
 const renderColorPickers = function (amount) {
   colorPickerContainer.innerHTML = '';
+  let html = '';
   for (let i = 0; i < amount; i++) {
-    const html = `
+    html += `
       <button 
         class="color-choice" 
         data-color-pick="${COLORS[i]}" 
         style="background-color:var(--peg-${COLORS[i]});">
       </button>
     `;
-    colorPickerContainer.insertAdjacentHTML('beforeend', html);
   }
+  html += `
+    <button 
+      class="color-choice control-btn" 
+      data-control="undo">&#9100; 
+    </button>
+    <button 
+      class="color-choice control-btn" 
+      data-control="submit">&#9094;
+    </button>
+  `;
+  colorPickerContainer.insertAdjacentHTML('beforeend', html);
 };
 
 //Creating and rendering board
@@ -92,6 +103,21 @@ const setUpMove = function () {
 colorPickerContainer.addEventListener('click', function (e) {
   const pick = e.target.closest('.color-choice');
   if (!pick) return;
+  //determine which button and add logic
+  //if button is submit
+  if (pick.dataset?.control === 'submit') {
+    alert('Submit logic');
+    return;
+  }
+  if (pick.dataset?.control === 'undo') {
+    if (state.colorPicks.length < 1) return;
+    state.colorPicks.pop();
+    console.log(state.colorPicks);
+    renderColorPicks();
+    return;
+  }
+  //if button is undo
+  //if button is color
   const color = e.target.dataset.colorPick;
   if (state.colorPicks.length < GAME_MODE[state.difficulty].codeLength) {
     state.colorPicks.push(color);
@@ -104,8 +130,13 @@ colorPickerContainer.addEventListener('click', function (e) {
 
 const renderColorPicks = function () {
   const box = document.querySelector(`[data-turn="${state.turn}"]`);
+  //This is for undo button logic
+  box.querySelectorAll('[data-peg]').forEach(peg => {
+    peg.style.backgroundColor = 'inherit';
+  });
   state.colorPicks.forEach((color, i) => {
     const pin = box.querySelector(`[data-peg="${i}"]`);
+    if (color === 'undo') pin.style.backgroundColor = 'white';
     pin.style.backgroundColor = `var(--peg-${color})`;
   });
 };
