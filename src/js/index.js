@@ -81,20 +81,14 @@ const newGameSetUp = function () {
   renderColorPickers(GAME_MODE[state.difficulty].colorChoice);
   //4.high Score TODO
   setUpMove();
+  console.log('SECRET CODE: ', state.code);
 };
 
 btnNewGame.addEventListener('click', function (e) {
   e.preventDefault();
   newGameHandler();
 });
-//GAME LOGIC
-//when game is set up player fill pins
-//submits code
-//game decide result
-//-player wins
-//-player misses code
-//--last turn -> game over
-//--turns left -> set up new input
+
 const setUpMove = function () {
   const box = document.querySelector(`[data-turn="${state.turn}"]`);
   box.classList.add('game-turn-active');
@@ -106,7 +100,8 @@ colorPickerContainer.addEventListener('click', function (e) {
   //determine which button and add logic
   //if button is submit
   if (pick.dataset?.control === 'submit') {
-    alert('Submit logic');
+    console.log('Submit logic');
+    mastermind(state.colorPicks, state.code);
     return;
   }
   if (pick.dataset?.control === 'undo') {
@@ -139,4 +134,25 @@ const renderColorPicks = function () {
     if (color === 'undo') pin.style.backgroundColor = 'white';
     pin.style.backgroundColor = `var(--peg-${color})`;
   });
+};
+
+//Mastermind flag algorithm
+const compareCodes = function (playerCode, secretCode) {
+  const result = Array.from(
+    { length: GAME_MODE[state.difficulty].codeLength },
+    () => null
+  );
+  for (const [i, color] of playerCode.entries()) {
+    for (const [j, code] of secretCode.entries()) {
+      if (color === code && i === j) {
+        result[i] = 'x';
+        break;
+      }
+      if (color === code && i !== j && result[j] !== 'x') {
+        result[j] = 'o';
+        break;
+      }
+    }
+  }
+  console.log(result);
 };
