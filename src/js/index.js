@@ -101,7 +101,8 @@ colorPickerContainer.addEventListener('click', function (e) {
   //if button is submit
   if (pick.dataset?.control === 'submit') {
     console.log('Submit logic');
-    mastermind(state.colorPicks, state.code);
+    const temp = compareCodes(state.colorPicks, state.code);
+    console.log(temp);
     return;
   }
   if (pick.dataset?.control === 'undo') {
@@ -138,21 +139,31 @@ const renderColorPicks = function () {
 
 //Mastermind flag algorithm
 const compareCodes = function (playerCode, secretCode) {
+  let redFlags = 0;
+  let whiteFlags = 0;
   const result = Array.from(
     { length: GAME_MODE[state.difficulty].codeLength },
     () => null
   );
+  //Find red flags
   for (const [i, color] of playerCode.entries()) {
-    for (const [j, code] of secretCode.entries()) {
-      if (color === code && i === j) {
-        result[i] = 'x';
-        break;
-      }
-      if (color === code && i !== j && result[j] !== 'x') {
-        result[j] = 'o';
-        break;
-      }
+    if (color === secretCode[i]) {
+      result[i] = color;
+      redFlags++;
     }
   }
-  console.log(result);
+  //Find white flags
+  for (const [i, color] of playerCode.entries()) {
+    if (
+      result.filter(ele => ele === color).length ===
+      secretCode.filter(ele => ele === color).length
+    )
+      continue;
+    if (result[i]) continue;
+    if (secretCode.includes(color)) {
+      result[i] = color;
+      whiteFlags++;
+    }
+  }
+  console.log(result, redFlags, whiteFlags);
 };
