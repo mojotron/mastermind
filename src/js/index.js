@@ -102,7 +102,7 @@ colorPickerContainer.addEventListener('click', function (e) {
   if (pick.dataset?.control === 'submit') {
     console.log('Submit logic');
     const temp = compareCodes(state.colorPicks, state.code);
-    console.log(temp);
+    gameController(temp);
     return;
   }
   if (pick.dataset?.control === 'undo') {
@@ -112,8 +112,7 @@ colorPickerContainer.addEventListener('click', function (e) {
     renderColorPicks();
     return;
   }
-  //if button is undo
-  //if button is color
+
   const color = e.target.dataset.colorPick;
   if (state.colorPicks.length < GAME_MODE[state.difficulty].codeLength) {
     state.colorPicks.push(color);
@@ -137,10 +136,24 @@ const renderColorPicks = function () {
   });
 };
 
+const renderFlagsPicks = function (flags) {
+  const box = document.querySelector(`[data-turn="${state.turn}"]`);
+  //This is for undo button logic
+  // box.querySelectorAll('[data-peg]').forEach(peg => {
+  //   peg.style.backgroundColor = 'inherit';
+  // });
+  flags.forEach((color, i) => {
+    const pin = box.querySelector(`[data-flag="${i}"]`);
+    if (color === 'undo') pin.style.backgroundColor = 'white';
+    pin.style.backgroundColor = `var(--flag-${color})`;
+  });
+};
+
 //Mastermind flag algorithm
 const compareCodes = function (playerCode, secretCode) {
   let redFlags = 0;
   let whiteFlags = 0;
+  //Temp array to mark colors selected with red or white flag
   const result = Array.from(
     { length: GAME_MODE[state.difficulty].codeLength },
     () => null
@@ -165,5 +178,29 @@ const compareCodes = function (playerCode, secretCode) {
       whiteFlags++;
     }
   }
-  console.log(result, redFlags, whiteFlags);
+  console.log(redFlags, whiteFlags);
+  return [redFlags, whiteFlags];
+};
+
+const getFlags = function (redFlags, whiteFlags) {
+  const red = 'red '.repeat(redFlags);
+  const white = 'white '.repeat(whiteFlags);
+  return (red + white).trim().split(' ');
+};
+
+const gameController = function (flagsArray) {
+  //display flags
+  renderFlagsPicks(getFlags(flagsArray[0], flagsArray[1]));
+  if (flagsArray[0] === GAME_MODE[state.difficulty].codeLength) {
+    alert('You found secret code');
+    return;
+  }
+  state.turn++;
+  state.colorPicks = [];
+  if (state.turn === TURNS) {
+    alert('You run out of guesses!');
+    return;
+  }
+
+  setUpMove();
 };
