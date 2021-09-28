@@ -1,10 +1,12 @@
 'use strict';
-//CSS
 import '../css/reset.css';
 import '../css/main.css';
-
-import { COLORS, GAME_MODE, TURNS } from './config.js';
+//
+import { GAME_MODE, TURNS } from './config.js';
+import * as model from './model.js';
 import codeMaker from './codeMaker.js';
+import boardView from './views/boardView.js';
+import controlsView from './views/controlsView.js';
 //Game object
 const state = {
   difficulty: '',
@@ -12,63 +14,9 @@ const state = {
   turn: 0,
   colorPicks: [],
 };
-//Creating color pickers depending on game difficulty
-const colorPickerContainer = document.querySelector('.color-picker-display');
-const renderColorPickers = function (amount) {
-  colorPickerContainer.innerHTML = '';
-  let html = '';
-  for (let i = 0; i < amount; i++) {
-    html += `
-      <button 
-        class="color-choice" 
-        data-color-pick="${COLORS[i]}" 
-        style="background-color:var(--peg-${COLORS[i]});">
-      </button>
-    `;
-  }
-  html += `
-    <button 
-      class="color-choice control-btn" 
-      data-control="undo">&#9100; 
-    </button>
-    <button 
-      class="color-choice control-btn" 
-      data-control="submit">&#9094;
-    </button>
-  `;
-  colorPickerContainer.insertAdjacentHTML('beforeend', html);
-};
-
-//Creating and rendering board
-const gameBoard = document.querySelector('.game-board-display');
-const crateBoard = function (turns) {
-  gameBoard.innerHTML = '';
-  for (let i = 0; i < turns; i++) {
-    const html = `
-      <div class="game-turn" data-turn="${i}">
-        <div class="game-turn-pegs">
-          ${createBoardPeg(GAME_MODE[state.difficulty].codeLength, 'peg')}
-        </div>
-        <div class="game-turn-flags">
-        ${createBoardPeg(GAME_MODE[state.difficulty].codeLength, 'flag')}
-        </div>
-      </div>
-    `;
-    gameBoard.insertAdjacentHTML('afterbegin', html);
-  }
-};
-
-const createBoardPeg = function (codeLength, datasetName) {
-  let html = '';
-  for (let i = 0; i < codeLength; i++) {
-    html += `<div class="color-choice color-${datasetName}" data-${datasetName}="${i}"></div>`;
-  }
-  return html;
-};
 
 //New Game initialization
 const btnNewGame = document.querySelector('.btn-new-game');
-
 const newGameHandler = function () {
   state.difficulty = document.querySelector('select').value;
   newGameSetUp();
@@ -77,8 +25,9 @@ const newGameHandler = function () {
 //Create new code, board, player controls, display high score
 const newGameSetUp = function () {
   state.code = codeMaker.createCode(state.difficulty);
-  crateBoard(TURNS);
-  renderColorPickers(GAME_MODE[state.difficulty].colorChoice);
+  boardView.createBoard(state.difficulty);
+  controlsView.createControls(state.difficulty);
+  controlsView.addHandlerControlClick(controlsController);
   //4.high Score TODO
   setUpMove();
   console.log('SECRET CODE: ', state.code);
@@ -94,34 +43,28 @@ const setUpMove = function () {
   box.classList.add('game-turn-active');
 };
 
-colorPickerContainer.addEventListener('click', function (e) {
-  const pick = e.target.closest('.color-choice');
-  if (!pick) return;
-  //determine which button and add logic
-  //if button is submit
-  if (pick.dataset?.control === 'submit') {
+const controlsController = function (btn) {
+  if (btn.dataset?.control === 'submit') {
     console.log('Submit logic');
     const temp = compareCodes(state.colorPicks, state.code);
     gameController(temp);
     return;
   }
-  if (pick.dataset?.control === 'undo') {
+  if (btn.dataset?.control === 'undo') {
     if (state.colorPicks.length < 1) return;
     state.colorPicks.pop();
     console.log(state.colorPicks);
     renderColorPicks();
     return;
   }
-
-  const color = e.target.dataset.colorPick;
+  const color = btn.dataset.colorPick;
   if (state.colorPicks.length < GAME_MODE[state.difficulty].codeLength) {
     state.colorPicks.push(color);
   } else {
     alert('All pegs selected, please undo or submit!');
   }
-  console.log(state.colorPicks);
   renderColorPicks();
-});
+};
 
 const renderColorPicks = function () {
   const box = document.querySelector(`[data-turn="${state.turn}"]`);
@@ -131,17 +74,12 @@ const renderColorPicks = function () {
   });
   state.colorPicks.forEach((color, i) => {
     const pin = box.querySelector(`[data-peg="${i}"]`);
-    if (color === 'undo') pin.style.backgroundColor = 'white';
     pin.style.backgroundColor = `var(--peg-${color})`;
   });
 };
 
 const renderFlagsPicks = function (flags) {
   const box = document.querySelector(`[data-turn="${state.turn}"]`);
-  //This is for undo button logic
-  // box.querySelectorAll('[data-peg]').forEach(peg => {
-  //   peg.style.backgroundColor = 'inherit';
-  // });
   flags.forEach((color, i) => {
     const pin = box.querySelector(`[data-flag="${i}"]`);
     if (color === 'undo') pin.style.backgroundColor = 'white';
@@ -201,6 +139,5 @@ const gameController = function (flagsArray) {
     alert('You run out of guesses!');
     return;
   }
-
   setUpMove();
 };
