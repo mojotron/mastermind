@@ -8,48 +8,32 @@ import codeMaker from './codeMaker.js';
 import boardView from './views/boardView.js';
 import controlsView from './views/controlsView.js';
 import pegsView from './views/pegsView.js';
-//Game object
-const state = {
-  difficulty: '',
-  code: [],
-  turn: 0,
-  colorPicks: [],
-};
+import newGameView from './views/newGameView.js';
+import turnView from './views/turnView.js';
 
-//New Game initialization
-const btnNewGame = document.querySelector('.btn-new-game');
-const newGameHandler = function () {
-  state.difficulty = document.querySelector('select').value;
-  newGameSetUp();
+const controlDifficulty = function (difficulty) {
+  model.setDifficulty(difficulty);
+  startNewGame();
 };
-
-const init = function () {
-  //Set up new game
-  //clean game state
-  //create new secret code
+//Set up new game
+const startNewGame = function () {
+  //Create secret code
+  const secretCode = codeMaker.createCode(model.state.difficulty);
+  model.setSecretCode(secretCode);
+  console.log('🤫', model.state.secretCode); //TODO remove this line
   //create clean board
+  boardView.createBoard(model.state.difficulty);
   //create user commands
-  //display high scores
-};
-const newGameSetUp = function () {
-  state.code = codeMaker.createCode(state.difficulty);
-  boardView.createBoard(state.difficulty);
-  controlsView.createControls(state.difficulty);
+  controlsView.createControls(model.state.difficulty);
   controlsView.addHandlerControlClick(controlsController);
-  //4.high Score TODO
-  setUpMove();
-  console.log('SECRET CODE: ', state.code);
+  //display high scores
+  //clean game state
+  model.state.userCode = [];
 };
-
-btnNewGame.addEventListener('click', function (e) {
-  e.preventDefault();
-  newGameHandler();
-});
-
-const setUpMove = function () {
-  const box = document.querySelector(`[data-turn="${state.turn}"]`);
-  box.classList.add('game-turn-active');
+const init = function () {
+  newGameView.newGameDifficulty(controlDifficulty);
 };
+init();
 
 const controlsController = function (btn) {
   if (btn.dataset?.control === 'submit') {
@@ -66,12 +50,14 @@ const controlsController = function (btn) {
     return;
   }
   const color = btn.dataset.colorPick;
-  if (state.colorPicks.length < GAME_MODE[state.difficulty].codeLength) {
-    state.colorPicks.push(color);
+  if (
+    model.state.userCode.length < GAME_MODE[model.state.difficulty].codeLength
+  ) {
+    model.state.userCode.push(color);
   } else {
     alert('All pegs selected, please undo or submit!');
   }
-  pegsView.renderPegs(state.turn, state.colorPicks);
+  pegsView.renderPegs(model.state.turn, model.state.userCode);
 };
 
 const getFlags = function (redFlags, whiteFlags) {
@@ -93,5 +79,5 @@ const gameController = function (flagsArray) {
     alert('You run out of guesses!');
     return;
   }
-  setUpMove();
+  turnView.updateTurnStyle(model.state.turn);
 };

@@ -1,6 +1,6 @@
 import { GAME_MODE, TURNS } from './config.js';
 
-const state = {
+export const state = {
   difficulty: 'normal', //TODO empty string, user sets this with new game
   turn: 0,
   timeStart: null,
@@ -9,13 +9,13 @@ const state = {
   highScores: [],
 };
 
-//High score
-//-format [username],[turns],[seconds]
-//{username, turns, seconds}
-//save to local storage
-//from local storage to state
+export const setDifficulty = function (difficulty) {
+  state.difficulty = difficulty;
+};
 
-//COMPARE CODES
+export const setSecretCode = function (codeArray) {
+  state.secretCode = codeArray;
+};
 
 export const compareCodes = function (playerCode, secretCode) {
   let redFlags = 0;

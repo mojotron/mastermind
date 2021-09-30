@@ -4,6 +4,7 @@ class BoardView {
   #parentElement = document.querySelector('.game-board-display');
 
   createBoard(difficulty) {
+    this.#parentElement.innerHTML = '';
     for (let i = 0; i < TURNS; i++) {
       const html = `
         <div class="game-turn" data-turn="${i}">
