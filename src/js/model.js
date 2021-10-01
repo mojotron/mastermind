@@ -17,6 +17,14 @@ export const setSecretCode = function (codeArray) {
   state.secretCode = codeArray;
 };
 
+export const incrementTurn = function () {
+  state.turn++;
+};
+
+export const resetUserCode = function () {
+  state.userCode = [];
+};
+
 export const compareCodes = function (playerCode, secretCode) {
   let redFlags = 0;
   let whiteFlags = 0;

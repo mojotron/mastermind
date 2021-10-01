@@ -45,7 +45,7 @@ body {
 }
 /* New game options*/
 .new-game {
-  grid-area: 3 / 2 / 4 / 3;
+  grid-area: 1 / 2 / 2 / 3;
   display: flex;
   justify-content: center;
 }
@@ -89,13 +89,14 @@ body {
   align-items: center;
 }
 .color-choice {
-  height: 2rem;
-  width: 2rem;
+  height: 2.2rem;
+  width: 2.2rem;
   border: 3px solid var(--peg-black);
   border-radius: 100%;
   cursor: pointer;
-  margin: 0.3rem;
+  margin: 0 0.15rem;
 }
+
 /*contol btns*/
 .control-btn {
   color: var(--flag-white);
@@ -114,7 +115,8 @@ body {
 }
 
 .game-turn {
-  width: 25rem;
+  min-width: 15rem;
+  min-height: 3rem;
   margin: 0.3rem 0;
   border-radius: 0.3rem;
   display: flex;
@@ -124,19 +126,32 @@ body {
 .game-turn-pegs,
 .game-turn-flags {
   display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.game-turn-pegs {
+  width: 75%;
+}
+.game-turn-flags {
+  width: 20%;
+  flex-wrap: wrap;
 }
 .game-turn-active {
-  background: linear-gradient(90deg, #9ef1c8, rgb(153, 133, 133));
+  background: linear-gradient(90deg, #dfd9bf, rgb(235, 198, 188));
+}
+.game-turn-miss {
+  background: linear-gradient(90deg, #ecde70, rgb(230, 131, 113));
 }
 .game-turn-win {
 }
 .game-turn-miss {
 }
 
-.color-pin {
-  transform: scale(0.75);
-  margin: 0;
+.color-peg {
+  width: 2rem;
+  height: 2rem;
 }
 .color-flag {
-  transform: scale(0.35);
+  width: 0.6rem;
+  height: 0.6rem;
 }
