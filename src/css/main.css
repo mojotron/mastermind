@@ -137,10 +137,10 @@ body {
   flex-wrap: wrap;
 }
 .game-turn-active {
-  background: linear-gradient(90deg, #dfd9bf, rgb(235, 198, 188));
+  background: linear-gradient(90deg, #f4fc84, #fcc796);
 }
 .game-turn-miss {
-  background: linear-gradient(90deg, #ecde70, rgb(230, 131, 113));
+  background: linear-gradient(90deg, #9de8f1, #88f1a0);
 }
 .game-turn-win {
 }
@@ -154,4 +154,9 @@ body {
 .color-flag {
   width: 0.6rem;
   height: 0.6rem;
+}
+/* highscors */
+.high-score-item {
+  display: flex;
+  justify-content: space-between;
 }

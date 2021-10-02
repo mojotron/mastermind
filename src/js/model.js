@@ -56,3 +56,18 @@ export const compareCodes = function (playerCode, secretCode) {
   console.log(redFlags, whiteFlags);
   return [redFlags, whiteFlags];
 };
+
+const storageHighScores = function () {
+  localStorage.setItem('highscores', JSON.stringify(state.highScores));
+};
+
+export const addHighScore = function (userName, moves, time) {
+  state.highScores.push({ userName, moves, time });
+  storageHighScores();
+};
+
+const init = function () {
+  const storage = localStorage.getItem('highscores');
+  if (storage) state.highScores = JSON.parse(storage);
+};
+init();

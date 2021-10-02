@@ -10,6 +10,7 @@ import controlsView from './views/controlsView.js';
 import pegsView from './views/pegsView.js';
 import newGameView from './views/newGameView.js';
 import turnView from './views/turnView.js';
+import highScoreView from './views/highScoreView.js';
 //INITIALIZE NEW GAME
 const controlDifficulty = function (difficulty) {
   model.setDifficulty(difficulty);
@@ -19,6 +20,7 @@ const controlDifficulty = function (difficulty) {
 const startNewGame = function () {
   model.state.userCode = [];
   model.state.turn = 0;
+  model.state.timeStart = new Date();
   //Create secret code
   const secretCode = codeMaker.createCode(model.state.difficulty);
   model.setSecretCode(secretCode);
@@ -26,11 +28,16 @@ const startNewGame = function () {
   boardView.createBoard(model.state.difficulty);
   turnView.updateTurnStyle(model.state.turn);
   controlsView.createControls(model.state.difficulty);
-
-  document
-    .querySelector('.color-picker-display')
-    .removeEventListener('click', controlsController, false);
   controlsView.addHandlerControlClick(controlsController);
+  highScoreView.updateHighScores(
+    model.state.difficulty,
+    model.state.highScores
+  );
+
+  // document
+  //   .querySelector('.color-picker-display')
+  //   .removeEventListener('click', controlsController, false);
+  //
   //display high scores TODO
   //clean game state TODO
 };
@@ -80,7 +87,14 @@ const gameEngine = function (flagsArray) {
   );
   if (flagsArray[0] === GAME_MODE[model.state.difficulty].codeLength) {
     alert('You found secret code');
-
+    const userName = prompt('Enter name for highscores >> ');
+    const time = new Date() - model.state.timeStart;
+    console.log(time);
+    model.addHighScore(userName, model.state.turn + 1, time);
+    highScoreView.updateHighScores(
+      model.state.difficulty,
+      model.state.highScores
+    );
     return;
   }
   turnView.updateTurnStyle(model.state.turn, false);
