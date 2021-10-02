@@ -4,9 +4,14 @@ export const state = {
   difficulty: 'normal', //TODO empty string, user sets this with new game
   turn: 0,
   timeStart: null,
+  time: null,
   secretCode: [],
   userCode: [],
-  highScores: [],
+  highScores: {
+    easy: [],
+    normal: [],
+    hard: [],
+  },
 };
 
 export const setDifficulty = function (difficulty) {
@@ -62,7 +67,9 @@ const storageHighScores = function () {
 };
 
 export const addHighScore = function (userName, moves, time) {
-  state.highScores.push({ userName, moves, time });
+  state.highScores[state.difficulty].push({ userName, moves, time });
+  //using arrays mutate feature to sort in place
+  sortHighScores(state.highScores[state.difficulty]);
   storageHighScores();
 };
 
@@ -71,3 +78,18 @@ const init = function () {
   if (storage) state.highScores = JSON.parse(storage);
 };
 init();
+
+const clearStorage = function () {
+  localStorage.clear('highscores');
+};
+
+const sortHighScores = function (array) {
+  return array.sort((a, b) => {
+    if (a.moves > b.moves) return 1;
+    if (a.moves < b.moves) return -1;
+    if (a.time > b.time) return 1;
+    if (a.time < b.time) return -1;
+  });
+};
+
+// clearStorage();

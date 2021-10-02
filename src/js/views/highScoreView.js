@@ -1,4 +1,4 @@
-import { capitalize } from '../helpers.js';
+import { capitalize, formatTime } from '../helpers.js';
 class HighScoresView {
   #title = document.querySelector('.game-mode');
   #parentElement = document.querySelector('.high-score-container');
@@ -11,7 +11,7 @@ class HighScoresView {
         <li class="high-score-item">
           <span class="high-score-username">${ele.userName}</span>
           <span class="high-score-moves">${ele.moves} moves</span> 
-          <span class="high-score-time">${ele.time}</span>
+          <span class="high-score-time">${formatTime(+ele.time)}</span>
         </li>
       `;
       this.#parentElement.insertAdjacentHTML('beforeend', html);

@@ -11,6 +11,8 @@ import pegsView from './views/pegsView.js';
 import newGameView from './views/newGameView.js';
 import turnView from './views/turnView.js';
 import highScoreView from './views/highScoreView.js';
+import alertView from './views/alertView.js';
+
 //INITIALIZE NEW GAME
 const controlDifficulty = function (difficulty) {
   model.setDifficulty(difficulty);
@@ -31,7 +33,7 @@ const startNewGame = function () {
   controlsView.addHandlerControlClick(controlsController);
   highScoreView.updateHighScores(
     model.state.difficulty,
-    model.state.highScores
+    model.state.highScores[model.state.difficulty]
   );
 
   // document
@@ -64,9 +66,7 @@ const controlsController = function (btn) {
   if (
     model.state.userCode.length < GAME_MODE[model.state.difficulty].codeLength
   ) {
-    console.log(color);
     model.state.userCode.push(color);
-    console.log(model.state.userCode);
   } else {
     alert('All pegs selected, please undo or submit!');
   }
@@ -85,21 +85,27 @@ const gameEngine = function (flagsArray) {
     model.state.turn,
     getFlags(flagsArray[0], flagsArray[1])
   );
+  //Correct guess 4 red flags
   if (flagsArray[0] === GAME_MODE[model.state.difficulty].codeLength) {
-    alert('You found secret code');
-    const userName = prompt('Enter name for highscores >> ');
-    const time = new Date() - model.state.timeStart;
-    console.log(time);
-    model.addHighScore(userName, model.state.turn + 1, time);
-    highScoreView.updateHighScores(
-      model.state.difficulty,
-      model.state.highScores
-    );
+    model.state.time = new Date() - model.state.timeStart;
+    alertView.winAlert();
+    alertView.addHandlerSubmit(controlUserName);
+    //wait for user input async code
+    //get input update highscore and remove form + overlay
+    // const userName = alertView.addHandlerSubmit(controlHighScoreSubmit);
+    // console.log(userName);
+    // model.addHighScore(userName, model.state.turn + 1, time);
+    // highScoreView.updateHighScores(
+    //   model.state.difficulty,
+    //   model.state.highScores[model.state.difficulty]
+    // );
     return;
   }
+  //Incorrect guess
   turnView.updateTurnStyle(model.state.turn, false);
   model.incrementTurn();
   model.resetUserCode();
+  //Game over, all turns used
   if (model.state.turn === TURNS) {
     alert('You run out of guesses!');
     return;
@@ -107,5 +113,13 @@ const gameEngine = function (flagsArray) {
   turnView.updateTurnStyle(model.state.turn);
 };
 
-//on win add high score
-const controlHighScore = function () {};
+const controlUserName = function (userName) {
+  console.log(userName);
+  console.log(userName, model.state.turn + 1, model.state.time);
+  model.addHighScore(userName, model.state.turn + 1, model.state.time);
+  highScoreView.updateHighScores(
+    model.state.difficulty,
+    model.state.highScores[model.state.difficulty]
+  );
+  alertView.toggleAlert();
+};
