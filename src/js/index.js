@@ -30,18 +30,13 @@ const startNewGame = function () {
   boardView.createBoard(model.state.difficulty);
   turnView.updateTurnStyle(model.state.turn);
   controlsView.createControls(model.state.difficulty);
+
   controlsView.addHandlerControlClick(controlsController);
+  // controlsView.removeListeners(controlsController);
   highScoreView.updateHighScores(
     model.state.difficulty,
     model.state.highScores[model.state.difficulty]
   );
-
-  // document
-  //   .querySelector('.color-picker-display')
-  //   .removeEventListener('click', controlsController, false);
-  //
-  //display high scores TODO
-  //clean game state TODO
 };
 
 newGameView.newGameDifficulty(controlDifficulty);
@@ -88,6 +83,7 @@ const gameEngine = function (flagsArray) {
   //Correct guess 4 red flags
   if (flagsArray[0] === GAME_MODE[model.state.difficulty].codeLength) {
     model.state.time = new Date() - model.state.timeStart;
+    controlsView.removeButtons();
     alertView.winAlert();
     alertView.addHandlerSubmit(controlUserName);
     return;
@@ -98,6 +94,7 @@ const gameEngine = function (flagsArray) {
   model.resetUserCode();
   //Game over, all turns used
   if (model.state.turn === TURNS) {
+    controlsView.removeButtons();
     alertView.loseAlert(model.state.secretCode, model.state.difficulty);
     alertView.closeAlert();
     return;

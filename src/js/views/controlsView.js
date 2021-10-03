@@ -4,11 +4,18 @@ class ControlsView {
   #parentElement = document.querySelector('.color-picker-display');
 
   addHandlerControlClick(handler) {
-    this.#parentElement.addEventListener('click', function (e) {
-      const btn = e.target.closest('.color-choice');
-      if (!btn) return;
-      handler(btn);
+    // this.#parentElement.addEventListener('click', function (e) {
+    //   const btn = e.target.closest('.color-choice');
+    //   if (!btn) return;
+    //   handler(btn);
+    // });
+    this.#parentElement.querySelectorAll('button.color-choice').forEach(btn => {
+      btn.addEventListener('click', handler.bind(this, btn));
     });
+  }
+
+  removeButtons() {
+    this.#parentElement.innerHTML = '';
   }
 
   createControls(difficulty) {
