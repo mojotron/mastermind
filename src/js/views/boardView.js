@@ -9,10 +9,10 @@ class BoardView {
       const html = `
         <div class="game-turn" data-turn="${i}">
           <div class="game-turn-pegs">
-            ${this.#createPegs('peg', difficulty)}
+            ${this.createPegs('peg', difficulty)}
           </div>
           <div class="game-turn-flags">
-            ${this.#createPegs('flag', difficulty)}
+            ${this.createPegs('flag', difficulty)}
           </div>
         </div>
       `;
@@ -20,7 +20,7 @@ class BoardView {
     }
   }
 
-  #createPegs(dataSetValue, difficulty) {
+  createPegs(dataSetValue, difficulty) {
     let html = '';
     for (let i = 0; i < GAME_MODE[difficulty].codeLength; i++) {
       html += `

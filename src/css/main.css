@@ -208,11 +208,32 @@ body {
 .btn-submit-highscore:active {
   background-color: var(--peg-green);
 }
+.btn-close-alert {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 10rem;
+  background: none;
+  border: none;
+  color: var(--flag-white);
+  font-size: 1.5rem;
+  font-family: 'Expletus Sans', 'Gruppo', monospace;
+}
+.btn-close-alert:hover,
+.btn-close-alert:active {
+  background-color: var(--flag-white);
+  color: var(--flag-black);
+}
 .message,
 label {
   font-family: 'Expletus Sans', 'Gruppo', monospace;
   color: var(--flag-white);
   font-size: 1.3rem;
+}
+.secret-container {
+  display: flex;
 }
 
 .hidden {

@@ -68,7 +68,7 @@ const controlsController = function (btn) {
   ) {
     model.state.userCode.push(color);
   } else {
-    alert('All pegs selected, please undo or submit!');
+    return;
   }
   pegsView.renderPegs(model.state.turn, model.state.userCode);
 };
@@ -90,15 +90,6 @@ const gameEngine = function (flagsArray) {
     model.state.time = new Date() - model.state.timeStart;
     alertView.winAlert();
     alertView.addHandlerSubmit(controlUserName);
-    //wait for user input async code
-    //get input update highscore and remove form + overlay
-    // const userName = alertView.addHandlerSubmit(controlHighScoreSubmit);
-    // console.log(userName);
-    // model.addHighScore(userName, model.state.turn + 1, time);
-    // highScoreView.updateHighScores(
-    //   model.state.difficulty,
-    //   model.state.highScores[model.state.difficulty]
-    // );
     return;
   }
   //Incorrect guess
@@ -107,15 +98,14 @@ const gameEngine = function (flagsArray) {
   model.resetUserCode();
   //Game over, all turns used
   if (model.state.turn === TURNS) {
-    alert('You run out of guesses!');
+    alertView.loseAlert(model.state.secretCode, model.state.difficulty);
+    alertView.closeAlert();
     return;
   }
   turnView.updateTurnStyle(model.state.turn);
 };
 
 const controlUserName = function (userName) {
-  console.log(userName);
-  console.log(userName, model.state.turn + 1, model.state.time);
   model.addHighScore(userName, model.state.turn + 1, model.state.time);
   highScoreView.updateHighScores(
     model.state.difficulty,

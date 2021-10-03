@@ -58,7 +58,6 @@ export const compareCodes = function (playerCode, secretCode) {
       whiteFlags++;
     }
   }
-  console.log(redFlags, whiteFlags);
   return [redFlags, whiteFlags];
 };
 

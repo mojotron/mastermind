@@ -18,6 +18,14 @@ class PegsView {
       pin.style.backgroundColor = `var(--flag-${color})`;
     });
   }
+
+  renderSecretCode(codeArr) {
+    const box = document.querySelector('.alert');
+    codeArr.forEach((color, i) => {
+      const pin = box.querySelector(`[data-secret="${i}"]`);
+      pin.style.backgroundColor = `var(--peg-${color})`;
+    });
+  }
 }
 
 export default new PegsView();
