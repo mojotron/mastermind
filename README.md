@@ -9,7 +9,7 @@ Three game modes easy(code length: 3, possible colors: 4), normal(code length: 4
 ## What have I learned
 
 - NPM
-- Webpack bundler - basic configuration, loading css.
+- Webpack bundler - basic configuration, Cache Busting and Plugins loading css.
 - ES6 Modules
 - ES6 Classes
 - Model-View-Controller pattern
