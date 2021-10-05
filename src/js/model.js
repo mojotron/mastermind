@@ -69,7 +69,15 @@ export const addHighScore = function (userName, moves, time) {
   state.highScores[state.difficulty].push({ userName, moves, time });
   //using arrays mutate feature to sort in place
   sortHighScores(state.highScores[state.difficulty]);
+  sliceHighScoreArray(15);
   storageHighScores();
+};
+
+const sliceHighScoreArray = function (size) {
+  state.highScores[state.difficulty] = state.highScores[state.difficulty].slice(
+    0,
+    size
+  );
 };
 
 const init = function () {

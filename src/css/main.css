@@ -92,7 +92,7 @@ body {
 .color-choice {
   height: 2.2rem;
   width: 2.2rem;
-  border: 3px solid var(--peg-black);
+  border: 2px solid var(--peg-black);
   border-radius: 100%;
   cursor: pointer;
   margin: 0 0.15rem;
@@ -117,8 +117,8 @@ body {
 
 .game-turn {
   min-width: 15rem;
-  min-height: 3rem;
-  margin: 0.3rem 0;
+  min-height: 2.8rem;
+  margin: 0.1rem 0;
   border-radius: 0.3rem;
   display: flex;
   justify-content: space-around;
@@ -143,10 +143,6 @@ body {
 .game-turn-miss {
   background: none;
 }
-.game-turn-win {
-}
-.game-turn-miss {
-}
 
 .color-peg {
   width: 2rem;
@@ -159,7 +155,7 @@ body {
 /* highscors */
 .high-score-item {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 /*overlay*/
 .overlay {

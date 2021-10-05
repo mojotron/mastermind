@@ -13,7 +13,7 @@ import turnView from './views/turnView.js';
 import highScoreView from './views/highScoreView.js';
 import alertView from './views/alertView.js';
 
-//INITIALIZE NEW GAME
+//INITIALIZE NEW GAME//
 const controlDifficulty = function (difficulty) {
   model.setDifficulty(difficulty);
   startNewGame();
@@ -23,16 +23,12 @@ const startNewGame = function () {
   model.state.userCode = [];
   model.state.turn = 0;
   model.state.timeStart = new Date();
-  //Create secret code
   const secretCode = codeMaker.createCode(model.state.difficulty);
   model.setSecretCode(secretCode);
-  console.log('🤫', model.state.secretCode); //TODO remove this line
   boardView.createBoard(model.state.difficulty);
   turnView.updateTurnStyle(model.state.turn);
   controlsView.createControls(model.state.difficulty);
-
   controlsView.addHandlerControlClick(controlsController);
-  // controlsView.removeListeners(controlsController);
   highScoreView.updateHighScores(
     model.state.difficulty,
     model.state.highScores[model.state.difficulty]
@@ -40,8 +36,8 @@ const startNewGame = function () {
 };
 
 newGameView.newGameDifficulty(controlDifficulty);
+// end of init //
 
-//////////////////////
 const controlsController = function (btn) {
   if (btn.dataset?.control === 'submit') {
     const flags = model.compareCodes(
