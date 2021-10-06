@@ -15,7 +15,7 @@ class AlertView {
         <button class="btn-submit-highscore">Submit</button>
       </form>
     `;
-    this.#parentElement.insertAdjacentHTML('afterbegin', html); //TODO
+    this.#parentElement.insertAdjacentHTML('afterbegin', html);
     this.toggleAlert();
   }
 
@@ -41,7 +41,7 @@ class AlertView {
       </div>
       
     `;
-    this.#parentElement.insertAdjacentHTML('afterbegin', html); //TODO
+    this.#parentElement.insertAdjacentHTML('afterbegin', html);
     this.toggleAlert();
     pegsView.renderSecretCode(secretCode);
   }
