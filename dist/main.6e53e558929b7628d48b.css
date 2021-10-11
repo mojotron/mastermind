@@ -396,6 +396,7 @@ label {
   }
   .color-picker-display {
     grid-area: 4 / 1 / 5 / 2;
+    flex-wrap: wrap;
   }
   .high-score-display {
     grid-area: 5 / 1 / 6 / 2;
